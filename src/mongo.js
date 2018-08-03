@@ -13,17 +13,20 @@ exports.handler = (event, context, callback) => {
         uri,
         (err, client) => {
             if (err) throw err;
-            console.log(client);
 
             const db = client.db("test-db");
-
             const images = db.collection("images");
 
             images.insert({ test: "value" }, (err, client) => {});
+
+            client.close(function(err) {
+                if (err) throw err;
+            });
         }
     );
 
     callback(null, {
-        statusCode: 201
+        statusCode: 201,
+        body: "Created"
     });
 };
